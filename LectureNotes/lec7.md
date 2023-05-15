@@ -48,7 +48,7 @@ You can create new stuff, GAN (generative adversarial networks).
 
 If you train it on cats/dogs, the initial section (the features learnt from the convolution and stuff) is usable for almost everything: it's just the final bit (the decoder) that needs to be redone. Features like 'dots' and 'edges' are present everywhere.
 
-Thus, you should always start with a pre-trained network: to quote daniel, "it's a free lunch".
+Thus, you should always start with a pre-trained network: to quote daniel, "it's a free lunch". Use stuff like ResNet.
 
 
 
