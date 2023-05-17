@@ -57,5 +57,43 @@ Transformers typically require a lot of data and are less straightforward to tra
 Transformers typically use **positional encoding:** take the fourier transform of the positions in the time series, and add that to the vector embedding.
 
 
+# Autoencoders
+
+An encodere generates a smaller version of the signal, like a summary. An autoencoder contains an encoder and a decoder.
+
+The encoder will represent some inputs in a 'latent space', and we train a decoder to do the inverse of the encoding. It's _unsupervised_ learning: you want to train it to encode and decode so that it gets the same thing out. There's something smart in it, either in the latent space, or in the actual encoding. Used a lot with images.
+
+A PCA is a linear Autoencoder.
+
+Used for
+* Unsupervised learning (eg: clustering) on images, sound, graphs, etc
+* Compression (with loss!) of images
+* De-noising and inpaiting imagees
+* Anomaly detection
+* Training on large datasets with few labels
+
+The most important hyperparameters are
+* Size of the latent space
+* Architecture of the NN
+* Loss function
+
+### De-Noising Autoencoders
+
+Say you have some noise that ruins your autoencoder, and you want to remove that noise at the end of the decoder. You do this by artificially adding in noise, and training your decoder to reproduce the original (un-noisly) data. In that way, you can de-noise numbers.
+
+This idea can be extended to reconstructing larger parts of an image, called "inpainting". See the slides: you can draw around, and thus 'influence' the autoencoder to predict what you believe.
+
+### Anomaly detection
+
+You spit out a lot of stuff, and need to do some sort of quality assuarance. You can just take pictures of it. One problem with a factory is if you're checking for anomalies, you might not have a lot of them, and thus you don't know what an anomaly looks like. There's a too small sample size of anomalies for supervised learning.
+
+Instead, you can tran an AE on all images, they'd be predominantly good. Then, ask what's the difference between the original data and the reconstruction? If the input is something it knows, the error will be small. However, if the input is an anomaly, the filters aren't there in the encoder, and so you'll have a large error.
+
+Of course, in this case you want a small latent space, so the autoencoder should not be 'general'.
+
+### Training assistance
+
+Say you have a large data set but only a small subset are labelled. You can take the large data set, make an autoencoder, and look at the encoded data in latent space. You can now make a small network classifier (or regressor) which uses them as inputs, and train it on the small subset of labelled data.
+
 
 
