@@ -1,0 +1,65 @@
+1. Classification_RizNoronha_LightGBM.txt
+    Algorithm: verstack LGBMTuner
+    Preprocessing: None
+    Key HPs: min_sum_hessian_in_leaf = 2.4738948884739065, num_leaves = 97, feature_fraction = 0.97
+    HP Optimization: Search space inferred from data, and optimized with Optuna. HP Importances are also calculated. Random train-test split every iteration, thus removing the need for Cross-Validation
+    Loss and Value: Binary LogLoss = 0.1507
+    Own Evaluation: Robust and Effective, a fairly competent model that has been investigated thorouhgly
+
+2. Classification_RizNoronha_TensorFlowNN.txt
+    Algorithm: keras models.Sequential
+    Preprocessing: sklearn RobustScaler: removes the median and scales based on quartile (as scaling with the mean isn't viable with outliers like -9999s)
+    Key HPs: 2 hidden layers, with 76 and 64 nodes (ReLU activated). Output node uses Sigmoid. learning_rate = 0.002.
+    HP Optimization: Bayesian Optimization with Optuna
+    Loss and Value: Binary LogLoss = 0.1716
+    Own Evaluation: Mediocre model, not investigated CV errors, can still predict but not as well as 1.
+
+3. Classification_RizNoronha_XGBoost.txt
+    Algorithm: XGBoost cv
+    Preprocessing: None
+    Key HPs: max_depth = 9, num_boost_round = 95, learning_rate = 0.023
+    HP Optimization: Bayesian Optimization with Optuna, with 5-fold cross-validation on the algorithm
+    Loss and Value: Binary LogLoss = 0.166
+    Own Evaluation: Decent algorithm, while I did explore it's HP space, I did not go as in-depth as 1. (so, no HP Importance charts)
+
+4. Clustering_RizNoronha_DBSCAN-BadPerformance.txt
+    Algorithm: sklearn DBSCAN
+    Preprocessing: sklearn PowerTransformer: A non-linear scalar to make the data more Gaussian-like (and deal with outliers)
+    Key HPs: epsilon = 0.1
+    HP Optimization: Trial and error (Grad Student Descent) to get n_clusters in the range [3, 50]
+    Loss and Value: Not calculated
+    Own Evaluation: Extremely poor at clustering electrons and non-electrons. Might be useful at identifying outliers, but useless apart from that.
+
+5. Clustering_RizNoronha_KNN.txt
+    Algorithm: sklearn KMeans
+    Preprocessing: sklearn PowerTransformer: A non-linear scalar to make the data more Gaussian-like (and deal with outliers). Dimensionality then reduced to 2D with UMAP
+    Key HPs: n_clusters = 6
+    HP Optimization: Trial and error (Grad Student Descent)
+    Loss and Value: Not calculated
+    Own Evaluation: Somewhat good at separating electrons from non-electrons, even with a small number of clusters.
+
+6. Clustering_RizNoronha_KNN2.txt
+    Algorithm: verstack LGBMTuner
+    Preprocessing: sklearn PowerTransformer: A non-linear scalar to make the data more Gaussian-like (and deal with outliers)
+    Key HPs: n_clusters = 21
+    HP Optimization: Trial and error (Grad Student Descent)
+    Loss and Value: Not calculated
+    Own Evaluation: Better at separating electrons and non-electrons into clusters as compared to 5., but also has more degrees of freedom (21 vs 6).
+
+7. Regression_RizNoronha_LightGBM.txt
+    Algorithm: verstack LGBMTuner
+    Preprocessing: None
+    Key HPs: feature_fraction = 0.97, lambda_l2 = 8.34, bagging_fraction = 0.52 
+    HP Optimization: Search space inferred from data, and optimized with Optuna. HP Importances are also calculated. Random train-test split every iteration, thus removing the need for Cross-Validation
+    Loss and Value: Mean Absolute Error = 6085.90
+    Own Evaluation: Once again, Verstack allows the model to be tuned precisely, leading to impressive performance
+
+8. Regression_RizNoronha_TensorFlowScaledNN.txt
+    Algorithm: keras models.Sequential
+    Preprocessing: X scaled with sklearn PowerTransformer: A non-linear scalar to make the data more Gaussian-like (and deal with outliers). y scaled with sklearn StandardScalar, a linear scaling which removes the mean and scales std to 1.
+    Key HPs: 3 hidden layers, of 67, 6, 36 nodes (ReLU). 1 Output node (SeLU). learning_rate = 0.0071
+    HP Optimization: Bayesian Optimization with Optuna
+    Loss and Value: Mean Absolute Error = 0.1285 on scaled output data. Equivalent to an MEA of 5851.97 on energy
+    Own Evaluation: Poor at predicting low (<50,000) energy values, good performance elsewhere
+
+
